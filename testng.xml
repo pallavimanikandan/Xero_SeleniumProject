@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true"
+          name="C:/Users/Pallavi/IdeaProjects/Xero_SeleniumProject/src/com/company/XeroTestNG.java">
+        <classes>
+            <class name="com.company.XeroTestNG">
+                <methods>
+                    <include name="TC01_successfulLogin"/>
+                    <include name="TC01B_IncorrectPassword"/>
+                    <include name="TC01C_IncorrectEmail"/>
+                    <include name="TC01D_NavigateToXERO"/>
+                    <include name="TC02B_SignUpToXERO"/>
+                    <include name="TC02C_SignUpToXERO"/>
+                    <include name="TC02D_SignUpToXERO"/>
+                    <include name="TC02E_SignUpToXERO"/>
+                    <include name="TC03A_TabsPage"/>
+                    <include name="TC04A_LogoutFunction"/>
+                    <include name="TC06A_UploadProfileImage"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
