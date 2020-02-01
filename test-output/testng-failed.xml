@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [All Test Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="C:/Users/Pallavi/IdeaProjects/Xero_SeleniumProject/src/com/company/XeroTestNG.java(failed)">
+    <classes>
+      <class name="com.company.XeroTestNG">
+        <methods>
+          <include name="waitBeforeAllTest"/>
+          <include name="TC06A_UploadProfileImage"/>
+          <include name="closeReport"/>
+          <include name="TC03A_TabsPage"/>
+          <include name="TC02B_SignUpToXERO"/>
+          <include name="closeDriver"/>
+          <include name="TC02C_SignUpToXERO"/>
+          <include name="loadReportPorperty"/>
+          <include name="TC02D_SignUpToXERO"/>
+          <include name="TC02E_SignUpToXERO"/>
+          <include name="TC01D_NavigateToXERO"/>
+          <include name="TC04A_LogoutFunction"/>
+        </methods>
+      </class> <!-- com.company.XeroTestNG -->
+    </classes>
+  </test> <!-- C:/Users/Pallavi/IdeaProjects/Xero_SeleniumProject/src/com/company/XeroTestNG.java(failed) -->
+</suite> <!-- Failed suite [All Test Suite] -->
