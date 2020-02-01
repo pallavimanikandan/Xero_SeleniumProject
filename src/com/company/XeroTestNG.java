@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class XeroTestNG  {
     //Driver variable
@@ -46,15 +47,15 @@ public class XeroTestNG  {
          Thread.sleep(10000);
      }
 
-     @AfterMethod
+   /*  @AfterMethod
      public void closeDriver()
      {
          reports.endTest(logger);
          driver.close();
      }
-
-     @Test (priority=1)
-     private static void TC01_successfulLogin() throws IOException, InterruptedException {
+*/
+    @Test (priority=1)
+    private static void TC01_successfulLogin() throws IOException, InterruptedException {
          logger = reports.startTest("TC01_successfulLogin");
          InitializeDriver (null, "https://www.xero.com/us");
          Thread.sleep(2000);
@@ -78,8 +79,8 @@ public class XeroTestNG  {
          logger.log(LogStatus.PASS, "User Logged on Successfully");
          logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
      }
-     @Test (priority=2)
-     private static void TC01B_IncorrectPassword() throws IOException, InterruptedException {
+    @Test (priority=2)
+    private static void TC01B_IncorrectPassword() throws IOException, InterruptedException {
          logger = reports.startTest("TC01B_IncorrectPassword");
          InitializeDriver (null, "https://www.xero.com/us");
          Thread.sleep(2000);
@@ -103,8 +104,8 @@ public class XeroTestNG  {
          logger.log(LogStatus.PASS, "Message - Your email or password is incorrect is displayed");
          logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
         }
-     @Test (priority=3)
-     private static void TC01C_IncorrectEmail() throws IOException, InterruptedException {
+    @Test (priority=3)
+    private static void TC01C_IncorrectEmail() throws IOException, InterruptedException {
          InitializeDriver(null, "https://www.xero.com/us");
          Thread.sleep(1000);
          logger = reports.startTest("TC01C_IncorrectEmail");
@@ -128,8 +129,8 @@ public class XeroTestNG  {
          logger.log(LogStatus.PASS, "Message - Your email or password is incorrect is displayed ");
          logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
 }
-     @Test (priority=4)
-     private static void TC01D_NavigateToXERO() throws IOException, InterruptedException {
+    @Test (priority=4)
+    private static void TC01D_NavigateToXERO() throws IOException, InterruptedException {
          InitializeDriver(null, "https://login.xero.com/");
          Thread.sleep(1000);
          String[][] data = ReadWriteTextFile.readTextFile(filePath);
@@ -150,9 +151,9 @@ public class XeroTestNG  {
          logger.log(LogStatus.PASS, "User Logged on Successfully");
          logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
 }
-    // Error on Im not robot Line 146
+    @Test (priority=5)
     private static void TC02A_SignUpToXERO() throws IOException, InterruptedException {
-         InitializeDriver(null, "https://www.xero.com/us/");
+         InitializeDriver("firefox", "https://www.xero.com/us/");
          logger = reports.startTest("TC02A_SignUpToXERO");
          //Click Free Trial Btn
          WebElement freeTrialBtn = driver.findElement(By.linkText("Free trial"));
@@ -174,23 +175,24 @@ public class XeroTestNG  {
          WebElement country = driver.findElement(By.xpath("//select[@name='LocationCode']"));
          Thread.sleep(2000);
          dropDownByVisibleText(country,"Angola","LocationCode - US");
-
-      /* //Error    //I am not robot Check box - Location Code
+        // Thread.sleep(5000);
+        /* //I am not robot Check box - Location Code
          WebElement iframeRobot = driver.findElement(By.xpath("//iframe[@name='a-6ruxk58bozfp']"));
          driver.switchTo().frame(iframeRobot);
          Thread.sleep(1000);
-       //  WebElement checkBoxRobot = driver.findElement(By.xpath("//div[@class='g-recaptcha form-group invalid']"));
-         WebElement checkBoxRobot = driver.findElement(By.xpath("//div class='rc-anchor-logo-img rc-anchor-logo-img-portrait']"));
+         WebElement checkBoxRobot = driver.findElement(By.xpath("//div[@class='g-recaptcha form-group invalid']"));
          clickElement(checkBoxRobot,"I am not Robot CheckBox");
-         driver.switchTo().defaultContent();
-      */   //Terms Accepted
+         driver.switchTo().defaultContent(); */
+        Thread.sleep(50000);
+        /*  Selecting the captcha images manually can't be automated */
+        //Terms Accepted
         WebElement termAccepted = driver.findElement(By.xpath("//input[@name='TermsAccepted']"));
         clickElement(termAccepted,"Accepting Terms");
         Thread.sleep(5000);
         logger.log(LogStatus.INFO, "Values has been entered");
         logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
         //Get Started Button
-        WebElement getStartedBtn = driver.findElement(By.xpath("//span[@class='g-recaptcha-submit']"));
+        WebElement getStartedBtn = driver.findElement(By.xpath("//button[@class='btn btn-primary']"));
         clickElement(getStartedBtn,"Get Started Button");
         Thread.sleep(2000);
         logger.log(LogStatus.FAIL, "Inbox Page is not displayed");
@@ -420,7 +422,7 @@ public class XeroTestNG  {
         logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
 
     }
-    //Error Could not navigate to organization page
+    @Test
     private static void TC08A_AddOrganizationTrail() throws IOException, InterruptedException {
         InitializeDriver(null, "https://login.xero.com/");
         logger = reports.startTest("TC08A_AddOrganizationTrail");
@@ -431,44 +433,47 @@ public class XeroTestNG  {
         WebElement organi = driver.findElement(By.xpath("//span[@class='xrh-appbutton--text']"));
         clickElement(organi,"Organization");
         Thread.sleep(1000);
-        String beforecrrUrl = driver.getCurrentUrl();
-        System.out.print("Before Cuurent URL: " + beforecrrUrl);
-
         //Add New Organization
         WebElement  newOrgani= driver.findElement(By.linkText("Add a new organization"));
         clickElement(newOrgani,"Add New Organization");
-        Thread.sleep(10000);
-      /*  //Org Name
-       //Switch to new window opened we dont know how many windows are opened so handling it thru for each loop
-        for (String winHandle : driver.getWindowHandles()) {
-            driver.switchTo().window(winHandle);
-        }
-        String crrUrl = driver.getCurrentUrl();
-        System.out.print("After Cuurent URL: " + crrUrl);
-        driver.navigate().to(crrUrl);
-        //Thread.sleep(5000);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        */
-        WebElement orgName = driver.findElement(By.xpath("//input[@id='11697ad1-e07a-43c7-842c-d6a313df370e-control']"));
+        Thread.sleep(3000);
+        //Org Name
+        // WebElement orgName = driver.findElement(By.xpath("//input[@id='11697ad1-e07a-43c7-842c-d6a313df370e-control']"));
+        WebElement orgName = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/form[1]/div[1]/div[1]/div[1]/input[1]"));
         enterText(orgName,"Self","Organization Name");
+        Thread.sleep(2000);
+        //PayTaxes
+        //PayTaxes is a dynamic listbox so did it in 2 steps
+        WebElement payTaxDropBtn = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/form[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
         Thread.sleep(1000);
-        //PayTaxes US is default so sk
-        //WebElement browseBtnVal = driver.findElement(By.id("c6bdf3eb-4bbb-4727-8a63-331b815af4c9-control"));
-        //Thread.sleep(2000);
-
+        clickElement(payTaxDropBtn,"PayTax Drop Down");
+        Thread.sleep(2000);
+        WebElement payTaxCountryList = driver.findElement(By.xpath("//li[@id='CNTRY/US']//span[@class='xui-pickitem--text']"));
+        payTaxCountryList.click();
+        Thread.sleep(2000);
         //TimeZone
-        WebElement timeZone = driver.findElement(By.id("321412bc-0852-4aa4-9215-a1697cbe21a7-control"));
-        enterText(timeZone,"(UTC-08:00) Pacific Time (US & Canada)","Time Zone");
+        WebElement timeZonedropBtn = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/form[1]/div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(timeZonedropBtn,"TimeZone Drop Down");
+        Thread.sleep(2000);
+        WebElement timeZonelist = driver.findElement(By.xpath("//span[contains(text(),'(UTC-08:00) Pacific Time (US & Canada)')]"));
+        clickElement(timeZonelist,"TimeZone List");
         Thread.sleep(2000);
         //Organizaton Do
-        WebElement orgDo = driver.findElement(By.id("14c6dcca-e960-4c62-b06c-40728dc24ddc-control"));
-        enterText(orgDo,"engineering","Organization Do");
-        Thread.sleep(2000);
-
-        logger.log(LogStatus.FAIL, "Cant be filled the oraganization start up page");
+        WebElement orgDo = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/form[1]/div[4]/div[1]/div[1]/div[1]/div[2]/div[1]/input[1]"));
+        Thread.sleep(4000);
+       // enterText(orgDo,"Marine Engineering","Organization Do");
+        orgDo.sendKeys("Marine Engineering");
+        Thread.sleep(7000);
+        //start Trial
+        WebElement startTrail = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/form[1]/div[8]/div[1]/button[1]"));
+        clickElement(startTrail,"Start Trail Button");
+        Thread.sleep(5000);
+        logger.log(LogStatus.PASS, "Organization start up page has been done successfully");
         logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
 
     }
+    @Test
     private static void TC08B_AddOrganizationPaid() throws IOException, InterruptedException {
         InitializeDriver(null, "https://login.xero.com/");
         logger = reports.startTest("TC08B_AddOrganizationPaid");
@@ -493,35 +498,161 @@ public class XeroTestNG  {
         WebElement  newOrgani= driver.findElement(By.linkText("Add a new organization"));
         clickElement(newOrgani,"Add New Organization");
         Thread.sleep(5000);
-      /*  //Org Name
-       //Switch to new window opened we dont know how many windows are opened so handling it thru for each loop
-        for (String winHandle : driver.getWindowHandles()) {
-            driver.switchTo().window(winHandle);
-        }
-        String crrUrl = driver.getCurrentUrl();
-        System.out.print("After Cuurent URL: " + crrUrl);
-        driver.navigate().to(crrUrl);
-        //Thread.sleep(5000);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        */
-        WebElement orgName = driver.findElement(By.xpath("//input[@id='6d1d5fa0-76eb-49b3-827b-fe13d9ebb104-control']"));
+        //Organization Name
+        WebElement orgName = driver.findElement(By.xpath("//form[1]/div[1]/div[1]/div[1]/input[1]"));
         enterText(orgName,"Self","Organization Name");
         Thread.sleep(1000);
-        //PayTaxes US is default so sk
-        //WebElement browseBtnVal = driver.findElement(By.id("c6bdf3eb-4bbb-4727-8a63-331b815af4c9-control"));
-        //Thread.sleep(2000);
-
-        //TimeZone
-        WebElement timeZone = driver.findElement(By.xpath("//input[@id='65bf5b3d-945e-42a2-96a0-9cb42f9a5a03-control']"));
-        enterText(timeZone,"(UTC-08:00) Pacific Time (US & Canada)","Time Zone");
+        //PayTaxes is a dynamic listbox so did it in 2 steps
+        WebElement payTaxDropBtn = driver.findElement(By.xpath("//form[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(payTaxDropBtn,"PayTax Drop Down");
         Thread.sleep(2000);
-        //Organizaton Do
-        WebElement orgDo = driver.findElement(By.id("14c6dcca-e960-4c62-b06c-40728dc24ddc-control"));
-        enterText(orgDo,"engineering","Organization Do");
+        WebElement payTax = driver.findElement(By.xpath("//li[@id='CNTRY/US']//span[@class='xui-pickitem--text']"));
+        payTax.click();
         Thread.sleep(2000);
-
-        logger.log(LogStatus.FAIL, "Cant be filled the oraganization start up page");
+        //Time Zone
+        WebElement timeZonedropBtn = driver.findElement(By.xpath("//form[1]/div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(timeZonedropBtn,"TimeZone Drop Down");
+        Thread.sleep(2000);
+        WebElement timeZonelist = driver.findElement(By.xpath("//span[contains(text(),'(UTC-08:00) Pacific Time (US & Canada)')]"));
+        clickElement(timeZonelist,"TimeZone List");
+        Thread.sleep(3000);
+        //Organizaton Do textbox
+        driver.findElement(By.xpath("//form/div[4]/div/div/div/div[2]/div/input")).sendKeys("engineering");
+        Thread.sleep(3000);
+        //if you change the li[num] value, you can get some dii. option
+        driver.findElement(By.xpath("//div[@class='xui-dropdown--scrollable-content']/child::ul/child::li[3]")).click();
+        Thread.sleep(2000);
+        //Buy now button
+        driver.findElement(By.xpath("//button[@class='xui-button xui-actions--secondary xui-button-standard xui-button-medium']")).click();
+        logger.log(LogStatus.FAIL, "After Buynow button click, automatically logging out not showing the 'purchase plan page', but once we logged-in manually, able to see the organization name change in the start up page");
         logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
+
+    }
+    @Test
+    private static void TC08C_AddOrganizationWithStarterPlan() throws IOException, InterruptedException {
+        InitializeDriver(null, "https://login.xero.com/");
+        logger = reports.startTest("TC08F_AddOrganizationWithQuickBookUser");
+        LoginWebpage(filePath);
+        logger.log(LogStatus.INFO, "User Successfully Logged In");
+        Thread.sleep(4000);
+        //Organization Tab
+        WebElement organi = driver.findElement(By.xpath("//div[@class='xrh-appbutton--body']"));
+        clickElement(organi,"Organization");
+        Thread.sleep(1000);
+        //My Xero List item
+        WebElement  myXero= driver.findElement(By.linkText("My Xero"));
+        clickElement(myXero,"myXero");
+        Thread.sleep(10000);
+        switchNewWindow("Add Organization");
+        Thread.sleep(5000);
+        //Add an Organization
+        driver.findElement(By.cssSelector("#ext-gen1043")).click();
+        Thread.sleep(2000);
+        //Organization Name
+        WebElement orgName = driver.findElement(By.xpath("//form[1]/div[1]/div[1]/div[1]/input[1]"));
+        enterText(orgName,"Self","Organization Name");
+        Thread.sleep(1000);
+        //PayTaxes is a dynamic listbox so did it in 2 steps
+        WebElement payTaxDropBtn = driver.findElement(By.xpath("//form[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(payTaxDropBtn,"PayTax Drop Down");
+        Thread.sleep(2000);
+        WebElement payTax = driver.findElement(By.xpath("//li[@id='CNTRY/US']//span[@class='xui-pickitem--text']"));
+        payTax.click();
+        Thread.sleep(2000);
+        //Time Zone
+        WebElement timeZonedropBtn = driver.findElement(By.xpath("//form[1]/div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(timeZonedropBtn,"TimeZone Drop Down");
+        Thread.sleep(2000);
+        WebElement timeZonelist = driver.findElement(By.xpath("//span[contains(text(),'(UTC-08:00) Pacific Time (US & Canada)')]"));
+        clickElement(timeZonelist,"TimeZone List");
+        Thread.sleep(3000);
+        //Organizaton Do textbox
+        driver.findElement(By.xpath("//form/div[4]/div/div/div/div[2]/div/input")).sendKeys("engineering");
+        Thread.sleep(3000);
+        //if you change the li[num] value, you can get some diff. option
+        driver.findElement(By.xpath("//div[@class='xui-dropdown--scrollable-content']/child::ul/child::li[1]")).click();
+        Thread.sleep(2000);
+        //Start Trial button
+        driver.findElement(By.xpath("//button[@class='xui-button xui-actions--secondary xui-button-main xui-button-medium']")).click();
+        Thread.sleep(2000);
+
+
+
+
+    }
+    @Test
+    private static void TC08F_AddOrganizationWithQuickBookUser() throws IOException, InterruptedException {
+        InitializeDriver(null, "https://login.xero.com/");
+        logger = reports.startTest("TC08F_AddOrganizationWithQuickBookUser");
+        //Paid Login details
+        //Send value to email
+        WebElement email_txt = driver.findElement(By.id("email"));
+        enterText(email_txt, "gopala.anumanchipalli@gmail.com", "Email");
+        //Send value to Password textbox
+        WebElement passwd_txt = driver.findElement(By.id("password"));
+        enterText(passwd_txt,"password12", "Password");
+        //Click Login Button
+        WebElement login_btn = driver.findElement(By.id("submitButton"));
+        clickElement(login_btn, "Login Button");
+        Thread.sleep(2000L);
+        logger.log(LogStatus.INFO, "User Gopala Successfully Logged In");
+        Thread.sleep(4000);
+        //Organization Tab
+        WebElement organi = driver.findElement(By.xpath("//div[@class='xrh-appbutton--body']"));
+        clickElement(organi,"Organization");
+        Thread.sleep(5000);
+        //My Xero List item
+        WebElement  myXero= driver.findElement(By.linkText("My Xero"));
+        clickElement(myXero,"myXero");
+        Thread.sleep(7000);
+        //Add an Organization
+        WebElement addOrg= driver.findElement(By.xpath("/html[1]/body[1]/div[4]/form[1]/div[1]/section[2]/div[1]"));
+        clickElement(addOrg,"Add an Organization");
+        Thread.sleep(7000);
+        //Organization Name
+        WebElement orgName = driver.findElement(By.xpath("//form[1]/div[1]/div[1]/div[1]/input[1]"));
+        enterText(orgName,"Self","Organization Name");
+        Thread.sleep(1000);
+        //PayTaxes is a dynamic listbox so did it in 2 steps
+        WebElement payTaxDropBtn = driver.findElement(By.xpath("//form[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(payTaxDropBtn,"PayTax Drop Down");
+        Thread.sleep(2000);
+        WebElement payTax = driver.findElement(By.xpath("//li[@id='CNTRY/US']//span[@class='xui-pickitem--text']"));
+        payTax.click();
+        Thread.sleep(2000);
+        //Time Zone
+        WebElement timeZonedropBtn = driver.findElement(By.xpath("//form[1]/div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/button[1]/div[1]"));
+        Thread.sleep(1000);
+        clickElement(timeZonedropBtn,"TimeZone Drop Down");
+        Thread.sleep(2000);
+        WebElement timeZonelist = driver.findElement(By.xpath("//span[contains(text(),'(UTC-08:00) Pacific Time (US & Canada)')]"));
+        clickElement(timeZonelist,"TimeZone List");
+        Thread.sleep(3000);
+        //Organizaton Do textbox
+        driver.findElement(By.xpath("//form/div[4]/div/div/div/div[2]/div/input")).sendKeys("engineering");
+        Thread.sleep(3000);
+        //if you change the li[num] value, you can get some dii. option
+        driver.findElement(By.xpath("//div[@class='xui-dropdown--scrollable-content']/child::ul/child::li[5]")).click();
+        Thread.sleep(2000);
+        //QuickBook User
+        driver.findElement(By.xpath("//div[@class='xui-text-label']")).click();
+        Thread.sleep(1000);
+        //Click the 'yes' check box
+        driver.findElement(By.xpath("//div[@class='xui-styledcheckboxradio--checkbox xui-styledcheckboxradio--checkbox-small']")).click();
+        Thread.sleep(2000);
+        logger.log(LogStatus.INFO, "Able to see the 'Start Trial' button disabled and able to click on continue button");
+        logger.log(LogStatus.INFO,logger.addScreenCapture(takeScreenshot()));
+        //Continue button
+        driver.findElement(By.xpath("//button[@class='xui-button xui-actions--secondary xui-button-main xui-button-medium']")).click();
+        Thread.sleep(2000);
+
+
+
 
     }
 
@@ -604,6 +735,18 @@ public class XeroTestNG  {
         sel.selectByVisibleText(visibleText);
         System.out.println(ObjectName + visibleText+ " DropDown Selection by Visible Text has been done successfully");
     }
+   // List Item
+    public static void listBoxByIDVisibleText(WebElement ele, String visibleText, String listItemID, String ObjectName) {
+        System.out.println(visibleText + "," +listItemID );
+        List<WebElement> options = ele.findElements(By.id(listItemID));  // By.id , use xpath, tagname
+        for (WebElement option : options) {
+            if(visibleText.equals(option.getText())) {
+                option.click();
+                System.out.println(ObjectName + visibleText + " ListItem by Visible Text and ID has been done successfully");
+            }
+        }
+
+    }
     //close New Window
     public static void closeNewWindow(String ObjectName) {
         String parentWindow = driver.getWindowHandle();
@@ -616,6 +759,15 @@ public class XeroTestNG  {
         //switch back to main window using this code
         driver.switchTo().window(parentWindow);
     }
+        //Switch to new window
+    public static void switchNewWindow(String ObjectName) {
+    String parentWindow = driver.getWindowHandle();
+    //Switch to new window opened we dont know how many windows are opened so handling it thru for each loop
+    for (String winHandle : driver.getWindowHandles()) {
+        driver.switchTo().window(winHandle);
+    }
+    System.out.println("Switched to the new Page " +ObjectName);
+}
 
 
 }
